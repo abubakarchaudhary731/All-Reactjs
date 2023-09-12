@@ -6,30 +6,35 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
-import { GlobalContext } from './Context';
-import { Link , useParams, useNavigate } from 'react-router-dom';
+import { Link , useParams , useNavigate} from 'react-router-dom';
+import { useSelector , useDispatch } from 'react-redux';
+import { deleteExpense } from './Store/Slices/ExpenseSlice';
+
 
 
 const Detail = () => {
-    const {detail, setDeleteIndex, confirmDelete} = GlobalContext();
-    const {id} = useParams();
+    const item = useSelector((state) => {
+        return state.Detail;
+    })
+   
+    const dispatch = useDispatch();
     const navigate = useNavigate();
+    const {id} = useParams(); 
     const ID = parseInt(id);
 
+  
     const [open, setOpen] = useState(false);
 
-    const handleDelete = (id) => {
-        setDeleteIndex(id);
+    const handleDelete = (ID) => {
         setOpen(true);
     };
     
     const onConfirm = () => {
-        confirmDelete(ID);
+        dispatch(deleteExpense(ID));
         setOpen(false); // Close the delete confirmation dialog
         navigate('/');
     };
     const onClose = () => {
-        setDeleteIndex(null);
         setOpen(false);
     };
 
@@ -41,28 +46,28 @@ const Detail = () => {
         </div>   
         </div>    
      
-    <div className="container w-75 my-4" key={id}><hr />
+    <div className="container w-75 my-4" ><hr />
         <div className="d-flex">
             <h3><b>Name:</b></h3> 
-            <p className='my-2 mx-4'> {!(detail.name) ? "Your Expense is Normal" : detail.name} </p>
+            <p className='my-2 mx-4'> {!(item.name) ? "Your Expense is Normal" : item.name} </p>
         </div><hr />
         <div className="d-flex">
             <h3><b>Your Expense Amount:</b></h3> 
-            <p className='my-2 mx-4'> {detail.amount} </p>
+            <p className='my-2 mx-4'> {item.formData.amount} </p>
         </div> <hr />
         <div className="d-flex">
             <h3><b>Reason:</b></h3> 
-            <p className='my-2 mx-4'> {detail.description} </p>
+            <p className='my-2 mx-4'> {item.formData.description} </p>
         </div><hr />
         <div className="d-flex">
             <h3><b>Transection Time:</b></h3> 
-            <p className='my-2 mx-4'> {detail.time} </p>
+            <p className='my-2 mx-4'>  {item.formData.time}  </p>
         </div><hr />
         <div className="my-5">
             <Link to={"/"}>
                 <button className='btn btn-primary float-start'> Back to Home </button>
             </Link>  
-            <button className='btn btn-danger float-end'onClick={() => handleDelete(ID)}> Delete </button>
+            <button className='btn btn-danger float-end' onClick={() => handleDelete(ID)}> Delete </button>
         </div>
     </div>
 
@@ -82,7 +87,7 @@ const Detail = () => {
         Delete
     </Button>
     </DialogActions> 
-    </Dialog>
+    </Dialog> 
     </div>
     );
 }

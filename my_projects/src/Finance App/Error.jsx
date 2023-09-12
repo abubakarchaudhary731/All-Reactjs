@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom';
 const Error = () => {
   return (
     <div>
-        <div className="text-center">
-            <img src="../images/errror.png" alt="Error"  className='w-25 h-25'/> <br />
+        <div className="text-center mt-5">
+            <img src="images/errror.png" alt="Error"  className='w-25 h-25'/> <br />
         <Link to={'/'}>
             <button className='btn btn-primary'> Go back </button>
         </Link>
